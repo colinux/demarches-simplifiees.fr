@@ -7,7 +7,7 @@ class Cron::BackfillSiretDegradedModeJob < Cron::CronJob
   end
 
   def fix_etablissement_with_dossier
-    Etablissement.joins(:dossier).where(adresse: nil).find_each do |etablissement|
+    etablissement_scope.joins(:dossier).find_each do |etablissement|
       begin
         procedure_id = etablissement.dossier.procedure.id
 
@@ -19,7 +19,7 @@ class Cron::BackfillSiretDegradedModeJob < Cron::CronJob
   end
 
   def fix_etablissement_with_champs
-    Etablissement.joins(:champ).where(adresse: nil).find_each do |etablissement|
+    etablissement_scope.joins(:champ).find_each do |etablissement|
       begin
         procedure_id = etablissement.champ.procedure.id
 
@@ -28,5 +28,11 @@ class Cron::BackfillSiretDegradedModeJob < Cron::CronJob
         Sentry.capture_exception(e)
       end
     end
+  end
+
+  private
+
+  def etablissement_scope
+    Etablissement.where(adresse: nil).or(Etablissement.where(naf: nil)).or(Etablissement.where(siege_social: nil))
   end
 end
