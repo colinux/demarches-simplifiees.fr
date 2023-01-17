@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://demarches-simplifiees.fr/etablissement.schema.json",
+  "title": "Etablissement",
+  "type": "object",
+  "properties": {
+    "siege_social": {
+      "type": "boolean"
+    },
+    "siret": {
+      "type": "string",
+      "pattern": "^[0-9]{14}$"
+    },
+    "naf": {
+      "type": "string"
+    },
+    "libelle_naf": {
+      "type": "string"
+    },
+    "date_mise_a_jour": {
+      "type": "integer"
+    },
+    "date_creation_etablissement": {
+      "type": "integer"
+    },
+    "diffusable_commercialement": {
+      "type": "boolean"
+    },
+    "enseigne": {
+      "type": "string"
+    },
+    "adresse": {
+      "type": "object",
+      "properties": {
+        "l1": {
+          "type": "string"
+        },
+        "l2": {
+          "type": "string"
+        },
+        "l3": {
+          "type": "string"
+        },
+        "l4": {
+          "type": "string"
+        },
+        "l5": {
+          "type": "string"
+        },
+        "l6": {
+          "type": "string"
+        },
+        "l7": {
+          "type": "string"
+        },
+        "numero_voie": {
+          "type": "string"
+        },
+        "type_voie": {
+          "type": "string"
+        },
+        "nom_voie": {
+          "type": "string"
+        },
+        "complement_adresse": {
+          "type": "string"
+        },
+        "code_postal": {
+          "type": "string"
+        },
+        "localite": {
+          "type": "string"
+        },
+        "code_insee_localite": {
+          "type": "string"
+        },
+        "cedex": {
+          "type": "string"
+        }
+      },
+      "required": ["code_postal", "localite", "code_insee_localite"]
+    },
+    "region_implantation": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["code", "value"]
+    },
+    "tranche_effectif_salarie_etablissement": {
+      "type": "object",
+      "properties": {
+        "de": {
+          "type": "integer"
+        },
+        "a": {
+          "type": "integer"
+        },
+        "code": {
+          "type": "string"
+        },
+        "date_reference": {
+          "type": "string"
+        },
+        "intitule": {
+          "type": "string"
+        }
+      }
+    },
+    "commune_implantation": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["code", "value"]
+    },
+    "pays_implantation": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["code", "value"]
+    }
+  },
+  "required": ["adresse", "libelle_naf", "naf", "siege_social", "siret"]
+}
