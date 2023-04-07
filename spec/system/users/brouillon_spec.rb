@@ -10,6 +10,7 @@ describe 'The user' do
     log_in(user, procedure)
 
     fill_individual
+    save_screenshot
 
     # fill data
     fill_in('text *', with: 'super texte')
