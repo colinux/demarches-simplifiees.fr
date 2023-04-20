@@ -3,8 +3,8 @@ require 'capybara-screenshot/rspec'
 require 'capybara/email/rspec'
 require 'selenium/webdriver'
 
-def setup_driver(app, download_path, options)
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options:).tap do |driver|
+def setup_driver(app, download_path, options, browser: :chrome)
+  Capybara::Selenium::Driver.new(app, browser:, options:).tap do |driver|
     # Set download dir for Chrome < 77
     driver.browser.download_path = download_path
 
@@ -58,6 +58,21 @@ Capybara.register_driver :headless_chrome do |app|
   setup_driver(app, download_path, options)
 end
 
+Capybara.register_driver :firefox do |app|
+  options = Selenium::WebDriver::Firefox::Options.new
+  options.add_argument('--headless') if ENV["NO_HEADLESS"].blank?
+  options.add_argument('--width=1440') # 900 is not enough for some tests
+  options.add_argument('--height=900')
+  options.log_level = :debug
+
+  profile = Selenium::WebDriver::Firefox::Profile.new
+  profile['app.update.service.enabled'] = false
+  profile['app.update.auto'] = false
+  options.profile = profile
+
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options:)
+end
+
 Capybara.default_max_wait_time = 4
 
 Capybara.ignore_hidden_elements = false
@@ -81,7 +96,11 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by ENV['NO_HEADLESS'] ? :chrome : :headless_chrome
+    if ENV["SYSTEM_TEST_BROWSER"] == "firefox"
+      driven_by :firefox
+    else
+      driven_by ENV['NO_HEADLESS'] ? :chrome : :headless_chrome
+    end
   end
 
   # Set the user preferred language before Javascript system specs.
