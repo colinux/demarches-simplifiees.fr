@@ -1,0 +1,22 @@
+= form_for form, url: form.persisted? ? super_admins_release_note_path(form.group) : super_admins_release_notes_path do |f|
+  %fieldset#release_notes_fieldset.fr-fieldset{ 'data-controller': 'trix' }
+    .fr-fieldset__element
+      = render Dsfr::InputComponent.new(form: f, attribute: :released_on, input_type: :date_field)
+
+    .fr-fieldset__element
+      .fr-toggle
+        = f.check_box :published, class: "fr-toggle-input", id: dom_id(form, :published)
+        %label.fr-toggle__label{ for: dom_id(form, :published), data: { fr_checked_label: "Publié", fr_unchecked_label: "Brouillon" } }
+          Publier toutes les annonces
+
+
+    - form.release_notes.each_with_index do |release_note, index|
+      = render 'note_form', f:, release_note:, index:
+
+  %fieldset.fr-fieldset
+    .fr-fieldset__element
+      = link_to 'Ajouter une autre note', add_note_super_admins_release_note_path(form.group), class: 'fr-btn fr-btn--secondary', data: { turbo: true, turbo_method: :post }
+
+
+    .fr-fieldset__element
+      = f.submit "Valider", class: "fr-btn fr-btn--lg"

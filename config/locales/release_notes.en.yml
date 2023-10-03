@@ -1,0 +1,14 @@
+---
+en:
+  super_admins:
+    release_notes:
+      update:
+        success: Release notes were successfully saved.
+        error: Release notes were not saved.
+  activerecord:
+    attributes:
+      release_note:
+        body: Announce
+        categories: Categories
+        released_on: Publication date
+

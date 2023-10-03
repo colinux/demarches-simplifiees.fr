@@ -1,0 +1,14 @@
+---
+fr:
+  super_admins:
+    release_notes:
+      update:
+        error: Les annonces n’ont pas pu être sauvegardées.
+        success: Les annonces ont été sauvegardées.
+  activerecord:
+    attributes:
+      release_note:
+        body: Annonce
+        categories: Catégories
+        released_on: Date de publication
+
