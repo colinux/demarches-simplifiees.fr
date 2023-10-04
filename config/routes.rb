@@ -628,6 +628,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :release_notes, only: [:index]
+
   if Rails.env.test?
     scope 'test/api_geo' do
       get 'regions' => 'api_geo_test#regions'

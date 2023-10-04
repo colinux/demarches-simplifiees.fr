@@ -1,0 +1,5 @@
+= render partial: 'announce', collection: announces.group_by(&:group).values, as: :notes
+
+- if !paginated_groups.last_page?
+  = turbo_frame_tag "announces-page-#{paginated_groups.next_page}", loading: :lazy, src: next_page_path(paginated_groups) do
+    = link_to "Annonces précédentes", next_page_path(paginated_groups), class: "fr-btn fr-btn--secondary"

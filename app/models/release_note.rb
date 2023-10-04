@@ -11,4 +11,7 @@ class ReleaseNote < ApplicationRecord
 
   validates :categories, presence: true, inclusion: { in: CATEGORIES }
   validates :body, presence: true
+
+  scope :published, -> { where(published: true) }
+  scope :for_categories, -> (categories) { where("categories && ARRAY[?]::varchar[]", categories) }
 end

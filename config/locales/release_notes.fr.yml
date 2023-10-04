@@ -1,5 +1,8 @@
 ---
 fr:
+  release_notes:
+    index:
+      forbidden: Vous n’êtes pas autorisé(e) à consulter la page des Nouveautés.
   super_admins:
     release_notes:
       update:
@@ -11,4 +14,3 @@ fr:
         body: Annonce
         categories: Catégories
         released_on: Date de publication
-

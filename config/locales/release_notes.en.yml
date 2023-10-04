@@ -1,5 +1,8 @@
 ---
 en:
+  release_notes:
+    index:
+      forbidden: You are not authorized to view the News page.
   super_admins:
     release_notes:
       update:
@@ -11,4 +14,3 @@ en:
         body: Announce
         categories: Categories
         released_on: Publication date
-
