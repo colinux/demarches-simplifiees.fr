@@ -1,1 +1,1 @@
-= turbo_stream.append 'release_notes_fieldset', render('note_form', f: @release_note_form, release_note: @release_note, index: local_assigns[:index] || @index)
+= turbo_stream.append 'release_notes_fieldset', render(ReleaseNote::NoteFormComponent.new(note: @release_note))

@@ -1,0 +1,31 @@
+.fr-fieldset__element
+  .fr-background-alt--grey.fr-my-2w.fr-p-2w
+    %fieldset.fr-fieldset.fr-mb-0
+      = fields_for "release_notes_attributes[#{index}]", note do |note_form|
+        = note_form.hidden_field :id
+
+        .fr-fieldset__element
+          %fieldset.fr-fieldset{ "aria-labelledby": token_list(dom_id(note, "#{index}_category_legend"), categories_errors_describedby_id), class: categories_fieldset_class, role: categories_error? ? "group" : nil }
+            %legend.fr-fieldset__legend.fr-fieldset__legend--regular{ id: dom_id(note, :category_legend) }
+              = ReleaseNote.human_attribute_name(:categories)
+              = render EditableChamp::AsteriskMandatoryComponent.new
+
+            - ReleaseNote::CATEGORIES.each do |category|
+              .fr-fieldset__element.fr-fieldset__element--inline
+                .fr-checkbox-group
+                  = note_form.check_box :categories, { multiple: true, include_hidden: false, id: dom_id(note, "#{index}_category_#{category}"), "aria-describedby" => "#{dom_id(note, "#{index}_category_#{category}_messages")}" }, category, nil
+                  %label.fr-label{ for: dom_id(note, "#{index}_category_#{category}") }
+                    = category.humanize
+
+            - if categories_error?
+              .fr-messages-group{ id: "checkboxes-error-messages", aria_live: "assertive" }
+                - if categories_full_messages_errors.one?
+                  %p.fr-message.fr-message--error{ id: categories_errors_describedby_id }= categories_full_messages_errors.first
+                - else
+                  .fr-error-text{ id: categories_errors_describedby_id }
+                    %ul.list-style-type-none.fr-pl-0
+                      - categories_full_messages_errors.map do |error_message|
+                        %li= error_message
+
+        .fr-fieldset__element
+          = render Dsfr::InputComponent.new(form: note_form, attribute: :body, input_type: :rich_text_area)

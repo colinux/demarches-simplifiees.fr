@@ -40,7 +40,6 @@ class SuperAdmins::ReleaseNotesController < ApplicationController
   end
 
   def add_note
-    @release_note_form = ReleaseNoteForm.new(group: params[:group])
     @release_note = ReleaseNote.new(group: params[:group], published: false)
     @release_note.save(validate: false)
 
