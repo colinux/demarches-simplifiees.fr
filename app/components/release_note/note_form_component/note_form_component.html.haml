@@ -1,4 +1,4 @@
-.fr-fieldset__element
+.fr-fieldset__element{ id: fieldset_element_id }
   .fr-background-alt--grey.fr-my-2w.fr-p-2w
     %fieldset.fr-fieldset.fr-mb-0
       = fields_for "release_notes_attributes[#{index}]", note do |note_form|
@@ -29,3 +29,7 @@
 
         .fr-fieldset__element
           = render Dsfr::InputComponent.new(form: note_form, attribute: :body, input_type: :rich_text_area)
+
+        .fr-fieldset__element.text-right
+          = delete_button
+

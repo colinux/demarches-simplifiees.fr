@@ -124,7 +124,7 @@ Rails.application.routes.draw do
   }
 
   namespace :super_admins do
-    resources :release_notes, only: [:index, :create, :edit, :update, :show], param: :group do
+    resources :release_notes, only: [:index, :create, :edit, :update, :destroy, :show], param: :group do
       member do
         post :add_note
       end

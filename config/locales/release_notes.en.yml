@@ -8,6 +8,9 @@ en:
       update:
         success: Release notes were successfully saved.
         error: Release notes were not saved.
+      destroy:
+        success: Release note was successfully deleted.
+        error: "Can't destroy the last note of announce."
   activerecord:
     attributes:
       release_note:

@@ -8,6 +8,9 @@ fr:
       update:
         error: Les annonces n’ont pas pu être sauvegardées.
         success: Les annonces ont été sauvegardées.
+      destroy:
+        success: La note a été supprimée.
+        error: "Vous ne pouvez pas supprimer la dernière note d’une annonce."
   activerecord:
     attributes:
       release_note:

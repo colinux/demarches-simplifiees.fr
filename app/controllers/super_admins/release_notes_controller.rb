@@ -1,6 +1,6 @@
 class SuperAdmins::ReleaseNotesController < ApplicationController
   before_action :authenticate_super_admin!
-  before_action :set_notes, only: [:edit, :update]
+  before_action :set_notes, only: [:edit, :update, :destroy]
 
   def index
     @release_notes_groups = ReleaseNote
@@ -36,6 +36,25 @@ class SuperAdmins::ReleaseNotesController < ApplicationController
     else
       flash.now[:alert] = [t('.error'), @release_note_form.errors.full_messages].flatten
       render :edit
+    end
+  end
+
+  def destroy
+    @note = ReleaseNote.find(params[:id])
+
+    # At least one note per announce group, otherwise we can't destroy by turbo and stays on the same page
+    if @notes.many?
+      @note.destroy!
+    else
+      flash[:alert] = t('.error')
+    end
+
+    respond_to do |format|
+      format.html do
+        redirect_to edit_super_admins_release_note_path(@note.group), notice: t('.success')
+      end
+
+      format.turbo_stream
     end
   end
 

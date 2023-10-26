@@ -80,6 +80,32 @@ describe 'SuperAdmins::ReleaseNotes' do
     expect(note.categories).to eq(['expert'])
   end
 
+  scenario 'Delete a note', js: true, retry: 3 do
+    note1 = create(:release_note, body: "first note", group: "abc123")
+    note2 = create(:release_note, body: "second note", group: "abc123")
+
+    visit edit_super_admins_release_note_path("abc123")
+
+    expect(page).to have_content("first note")
+
+    within(all('.fr-background-alt--grey')[0]) do
+      accept_confirm { click_link 'Supprimer cette note' }
+    end
+
+    expect(page).not_to have_content("first note")
+    wait_until {
+      expect(ReleaseNote.exists?(note1.id)).to be_falsy
+    }
+
+    within(all('.fr-background-alt--grey')[0]) do
+      accept_confirm { click_link 'Supprimer cette note' }
+    end
+
+    expect(ReleaseNote.exists?(note2.id)).to be_truthy
+    expect(page).to have_content("Vous ne pouvez pas")
+    expect(page).to have_content("second note")
+  end
+
   def fill_in_trix_editor(label, with:)
     within(".fr-input-group", text: label) do
       find('trix-editor').click.set(with)

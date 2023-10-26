@@ -34,4 +34,14 @@ class ReleaseNote::NoteFormComponent < ApplicationComponent
   def generate_incremental_index
     Time.current.to_f.to_i
   end
+
+  def fieldset_element_id
+    dom_id(note, :fieldset_element)
+  end
+
+  def delete_button
+    link_to t('.delete'), super_admins_release_note_path(group: note.group, id: note.id),
+      class: "fr-btn fr-btn--secondary fr-btn--sm fr-btn--icon-left fr-icon-delete-line",
+      data: { turbo: true, turbo_method: :delete, turbo_confirm: "Supprimer cette note ?" }
+  end
 end
