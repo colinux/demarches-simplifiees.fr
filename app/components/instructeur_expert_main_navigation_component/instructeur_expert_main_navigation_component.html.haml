@@ -11,3 +11,5 @@
             = Avis.model_name.plural.capitalize
             - if helpers.current_expert.avis_summary[:unanswered] > 0
               %span.badge.warning= helpers.current_expert.avis_summary[:unanswered]
+
+      = render NavBarAnnouncesComponent.new

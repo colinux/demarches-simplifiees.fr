@@ -5,6 +5,8 @@ describe 'layouts/_header', type: :view do
     allow(view).to receive(:multiple_devise_profile_connect?).and_return(false)
     allow(view).to receive(:instructeur_signed_in?).and_return((profile == :instructeur))
     allow(view).to receive(:current_instructeur).and_return(current_instructeur)
+    allow(view).to receive(:administrateur_signed_in?).and_return(false)
+    allow(view).to receive(:expert_signed_in?).and_return(false)
     allow(view).to receive(:localization_enabled?).and_return(false)
 
     if user
@@ -57,12 +59,17 @@ describe 'layouts/_header', type: :view do
     let(:user) { instructeur.user }
     let(:profile) { :instructeur }
     let(:current_instructeur) { instructeur }
+    let!(:release_note) { create(:release_note, categories: ['instructeur']) }
 
     it { is_expected.to have_css(".fr-header__logo") }
     it { is_expected.to have_selector(:button, user.email, class: "account-btn") }
 
     it 'displays the Help dropdown menu' do
       expect(subject).to have_css(".help-dropdown")
+    end
+
+    it 'displays the Help dropdown menu' do
+      expect(subject).to have_link("Nouveautés")
     end
   end
 end

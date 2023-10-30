@@ -15,4 +15,16 @@ module ReleaseNotesHelper
 
     content_tag(:span, category.humanize, class: "fr-badge #{color_class}")
   end
+
+  def infer_default_announce_categories
+    if administrateur_signed_in?
+      ReleaseNote.default_categories_for_role(:administrateur, current_administrateur)
+    elsif instructeur_signed_in?
+      ReleaseNote.default_categories_for_role(:instructeur)
+    elsif expert_signed_in?
+      ReleaseNote.default_categories_for_role(:expert)
+    else
+      ReleaseNote.default_categories_for_role(:usager)
+    end
+  end
 end

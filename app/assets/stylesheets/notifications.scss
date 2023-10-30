@@ -7,3 +7,10 @@ span.notifications {
   border-radius: 4px;
   background-color: $orange;
 }
+
+.fr-header__tools {
+  .notifications {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+}
