@@ -1,3 +1,5 @@
+= render "main_navigation", action: :index
+
 .fr-container.fr-my-5w
   .fr-grid-row.fr-grid-row--center
     .fr-col-lg-10
@@ -9,15 +11,20 @@
         %thead
           %th Annoncé le
           %th Publié?
+          %th Notes
           %th Actions
         %tbody
-          - @release_notes.each do |release|
+          - @release_notes_groups.each do |group, releases|
             %tr
-              %td= l(release.released_on) if release.released_on
+              %td= l(releases.first.released_on) if releases.first.released_on
               %td
-                - if release.published?
+                - if releases.first.published?
                   %span.fr-badge.fr-badge--success.fr-badge--no-icon Publié
                 - else
                   %span.fr-badge.fr-badge--warning.fr-badge--no-icon Brouillon
               %td
-                = link_to 'Modifier', edit_super_admins_release_note_path(group: release.group), class: 'fr-btn fr-btn--secondary'
+                %ul
+                  - releases.each do |note|
+                    %li= note.body.to_plain_text.truncate_words(10)
+              %td
+                = link_to 'Modifier', edit_super_admins_release_note_path(group: group), class: 'fr-btn fr-btn--secondary'
