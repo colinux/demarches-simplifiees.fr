@@ -114,5 +114,7 @@ module TPS
       'spatial_ref_sys',
       'topology'
     ]
+
+    config.lograge.enabled = ENV['LOGRAGE_ENABLED'] == 'enabled'
   end
 end
