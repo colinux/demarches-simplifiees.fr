@@ -27,7 +27,7 @@ class Procedure::PublicationWarningComponent < ApplicationComponent
 
   def error_correction_page(attribute)
     case attribute
-    when :draft_revision
+    when :draft_revision, :draft_types_de_champ_public
       champs_admin_procedure_path(@procedure)
     when :attestation_template
       edit_admin_procedure_attestation_template_path(@procedure)
