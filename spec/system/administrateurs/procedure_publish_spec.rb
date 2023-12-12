@@ -35,39 +35,50 @@ describe 'Publishing a procedure', js: true do
     before do
       visit admin_procedures_path(statut: "brouillons")
       click_on procedure.libelle
-      find('#publish-procedure-link').click
     end
 
-    scenario 'an admin can publish it' do
-      expect(find_field('procedure_path').value).to eq procedure.path
-      fill_in 'lien_site_web', with: 'http://some.website'
-      within('form') { click_on 'Publier' }
-
-      expect(page).to have_text('Votre démarche est désormais publiée !')
-      expect(page).to have_button(title: 'Copiez le lien de la procédure')
+    context 'on procedure page' do
+      scenario 'an error is listed' do
+        expect(page).to have_content("Le champ « Enfants » doit comporter au moins un champ répétable")
+      end
     end
 
-    context 'when the procedure has invalid champs' do
-      let!(:procedure) do
-        create(:procedure,
-               :with_path,
-               :with_service,
-               :with_zone,
-               instructeurs: instructeurs,
-               administrateur: administrateur,
-               types_de_champ_public: [{ type: :repetition, libelle: 'Enfants', children: [] }, { type: :drop_down_list, libelle: 'Civilité', options: [] }],
-               types_de_champ_private: [{ type: :drop_down_list, libelle: 'Civilité', options: [] }])
+    context 'on publication page' do
+      before do
+        find('#publish-procedure-link').click
       end
 
-      scenario 'an error message prevents the publication' do
-        expect(page).to have_content('Des problèmes empêchent la publication de la démarche')
-        expect(page).to have_content("Le champ « Enfants » doit comporter au moins un champ répétable")
-        expect(page).to have_content("L’annotation privée « Civilité » doit comporter au moins un choix sélectionnable")
-
+      scenario 'an admin can publish it' do
         expect(find_field('procedure_path').value).to eq procedure.path
         fill_in 'lien_site_web', with: 'http://some.website'
+        within('form') { click_on 'Publier' }
 
-        expect(page).to have_button('Publier', disabled: true)
+        expect(page).to have_text('Votre démarche est désormais publiée !')
+        expect(page).to have_button(title: 'Copiez le lien de la procédure')
+      end
+
+      context 'when the procedure has invalid champs' do
+        let!(:procedure) do
+          create(:procedure,
+                :with_path,
+                :with_service,
+                :with_zone,
+                instructeurs: instructeurs,
+                administrateur: administrateur,
+                types_de_champ_public: [{ type: :repetition, libelle: 'Enfants', children: [] }, { type: :drop_down_list, libelle: 'Civilité', options: [] }],
+                types_de_champ_private: [{ type: :drop_down_list, libelle: 'Civilité', options: [] }])
+        end
+
+        scenario 'an error message prevents the publication' do
+          expect(page).to have_content('Des problèmes empêchent la publication de la démarche')
+          expect(page).to have_content("Le champ « Enfants » doit comporter au moins un champ répétable")
+          expect(page).to have_content("L’annotation privée « Civilité » doit comporter au moins un choix sélectionnable")
+
+          expect(find_field('procedure_path').value).to eq procedure.path
+          fill_in 'lien_site_web', with: 'http://some.website'
+
+          expect(page).to have_button('Publier', disabled: true)
+        end
       end
     end
   end
