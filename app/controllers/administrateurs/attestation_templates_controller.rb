@@ -3,6 +3,7 @@ module Administrateurs
     include UninterlacePngConcern
 
     before_action :retrieve_procedure
+    before_action :redirect_to_v2, only: [:edit, :preview]
 
     def show
       redirect_to edit_admin_procedure_attestation_template_path(@procedure)
@@ -73,6 +74,12 @@ module Administrateurs
       end
 
       @activated_attestation_params
+    end
+
+    def redirect_to_v2
+      return if @procedure.attestation_template&.v1?
+
+      redirect_to edit_admin_procedure_attestation_template_v2_path(@procedure)
     end
   end
 end

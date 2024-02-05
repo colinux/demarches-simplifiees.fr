@@ -66,6 +66,9 @@ class AttestationTemplate < ApplicationRecord
     ]
   }.freeze
 
+  def v1? = version == 1
+  def v2? = version == 2
+
   def attestation_for(dossier)
     attestation = Attestation.new(title: replace_tags(title, dossier, escape: false))
     attestation.pdf.attach(

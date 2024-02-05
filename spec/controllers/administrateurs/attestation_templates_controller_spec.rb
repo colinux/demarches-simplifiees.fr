@@ -89,9 +89,15 @@ describe Administrateurs::AttestationTemplatesController, type: :controller do
       let(:attestation_template) { nil }
 
       it do
-        expect(subject.status).to eq(200)
-        expect(assigns(:attestation_template).id).to be_nil
-        expect(assigns(:attestation_template)).to be_an_instance_of(AttestationTemplate)
+        expect(subject.status).to redirect_to edit_admin_procedure_attestation_template_v2_path(procedure)
+      end
+    end
+
+    context 'a v2 attestation has been activated' do
+      let(:attestation_template) { build(:attestation_template, :v2, activated: true) }
+
+      it do
+        expect(subject.status).to redirect_to edit_admin_procedure_attestation_template_v2_path(procedure)
       end
     end
   end
