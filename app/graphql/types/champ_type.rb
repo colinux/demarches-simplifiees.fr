@@ -77,6 +77,8 @@ module Types
           Types::Champs::EpciChampType
         when ::Champs::RNFChamp
           Types::Champs::RNFChampType
+        when ::Champs::RNAChamp
+          Types::Champs::RNAChampType
         when ::Champs::EngagementJuridiqueChamp
           Types::Champs::EngagementJuridiqueChampType
         else
