@@ -4,6 +4,8 @@ module DossierSearchableConcern
   included do
     before_save :update_search_terms
 
+    scope :without_search_terms, -> { select(column_names - ['search_terms', 'private_search_terms'].freeze) }
+
     def update_search_terms
       self.search_terms = [
         user&.email,

@@ -377,10 +377,11 @@ module Instructeurs
     def dossier_scope
       if action_name == 'update_annotations'
         Dossier
+          .without_search_terms
           .where(id: current_instructeur.dossiers.visible_by_administration)
           .or(Dossier.where(id: current_user.dossiers.for_procedure_preview))
       else
-        current_instructeur.dossiers.visible_by_administration
+        current_instructeur.dossiers.visible_by_administration.without_search_terms
       end
     end
 
