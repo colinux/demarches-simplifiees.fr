@@ -4,6 +4,8 @@ class Export < ApplicationRecord
   MAX_DUREE_CONSERVATION_EXPORT = 32.hours
   MAX_DUREE_GENERATION = 16.hours
 
+  self.ignored_columns +=  [:instructeur_id]
+
   enum format: {
     csv: 'csv',
     ods: 'ods',
