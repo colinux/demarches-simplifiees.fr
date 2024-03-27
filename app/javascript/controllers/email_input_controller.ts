@@ -1,4 +1,4 @@
-import { suggest } from 'email-butler';
+import { suggest, defaultValues } from 'email-butler';
 import { show, hide } from '@utils';
 import { ApplicationController } from './application_controller';
 
@@ -10,7 +10,12 @@ export class EmailInputController extends ApplicationController {
   declare readonly inputTarget: HTMLInputElement;
 
   checkEmail() {
-    const suggestion = suggest(this.inputTarget.value);
+    const domains = ['mail.numerique.gouv.fr', ...defaultValues.domains];
+
+    const suggestion = suggest(this.inputTarget.value, {
+      domains
+    });
+
     if (suggestion && suggestion.full) {
       this.suggestionTarget.innerHTML = suggestion.full;
       show(this.ariaRegionTarget);

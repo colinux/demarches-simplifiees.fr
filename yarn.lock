@@ -3850,10 +3850,9 @@ element-closest@^2.0.2:
   resolved "https://registry.yarnpkg.com/element-closest/-/element-closest-2.0.2.tgz#72a740a107453382e28df9ce5dbb5a8df0f966ec"
   integrity sha1-cqdAoQdFM4LijfnOXbtajfD5Zuw=
 
-email-butler@^1.0.13:
+"email-butler@github:demarches-simplifiees/email-butler#fix-exact-domain-match":
   version "1.0.13"
-  resolved "https://registry.yarnpkg.com/email-butler/-/email-butler-1.0.13.tgz#a5332a6e4ea35df06ed180d5983e9e9fcb014560"
-  integrity sha512-xVDcnDYYZg/ZRJi1aZGeFsa5TnS8ZM2eooGkE8xcniIWwXebrU6AQqtRct/b29L+ml77yK9/xp10VGEobXTSOg==
+  resolved "https://codeload.github.com/demarches-simplifiees/email-butler/tar.gz/b381be7a7edad2e5eafac67bd08e880eb6b28f53"
 
 emoji-regex@^8.0.0:
   version "8.0.0"
