@@ -1,7 +1,10 @@
 require:
   - './lib/linters/application_name_linter.rb'
+  - './lib/cops/user_email_for.rb'
 
 linters:
+  DS/UserEmailFor:
+    enabled: true
   ApplicationNameLinter:
     enabled: true
 

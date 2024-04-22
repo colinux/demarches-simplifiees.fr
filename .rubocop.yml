@@ -5,6 +5,7 @@ require:
   - ./lib/cops/add_concurrent_index.rb
   - ./lib/cops/application_name.rb
   - ./lib/cops/unscoped.rb
+  - ./lib/cops/user_email_for.rb
 
 inherit_mode:
   merge:
@@ -36,6 +37,9 @@ DS/ApplicationName:
     - "./spec/**/*"
 
 DS/Unscoped:
+  Enabled: true
+
+DS/UserEmailFor:
   Enabled: true
 
 Bundler/DuplicatedGem:
