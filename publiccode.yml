@@ -1,14 +1,14 @@
-# This repository adheres to the publiccode.yml standard by including this 
+# This repository adheres to the publiccode.yml standard by including this
 # metadata file that makes public software easily discoverable.
 # More info at https://github.com/italia/publiccode.yml
 
 publiccodeYmlVersion: '0.2'
 name: Démarches Simplifiéees
-url: 'https://github.com/betagouv/demarches-simplifiees.fr'
+url: 'https://github.com/demarches-simplifiees/demarches-simplifiees.fr'
 landingURL: 'https://www.demarches-simplifiees.fr/'
-roadmap: 'https://github.com/betagouv/demarches-simplifiees.fr/wiki/Feuille-de-route'
-releaseDate: 'https://github.com/betagouv/demarches-simplifiees.fr/releases/latest'
-developmentStatus: beta
+roadmap: 'https://github.com/demarches-simplifiees/demarches-simplifiees.fr/wiki/Feuille-de-route-2024'
+releaseDate: 'https://github.com/demarches-simplifiees/demarches-simplifiees.fr/releases/latest'
+developmentStatus: stable
 softwareType: standalone/backend
 categories:
   - digital-citizenship
@@ -29,7 +29,7 @@ description:
   fr:
     documentation: 'https://doc.demarches-simplifiees.fr/'
     apiDocumentation: |-
-      https://doc.demarches-simplifiees.fr/pour-aller-plus-loin/graphql#presentation-de-lapi
+      https://doc.demarches-simplifiees.fr/api-graphql
     awards:
       - Prix spécial du Jury Acteurs du Libre (CNLL)  2021
     shortDescription: |-
