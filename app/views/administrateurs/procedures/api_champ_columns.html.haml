@@ -1,0 +1,16 @@
+= turbo_frame_tag("api-champ-columns") do
+  %h1#fr-modal-title-modal-1.fr-modal__title
+    = t('.modal.title', type_de_champ: t(TypeDeChamp.type_champs[@type_de_champ], scope: 'activerecord.attributes.type_de_champ.type_champs'))
+
+  %p.fr-hint-text
+    Les données suivantes sont automatiquement récupérées par API et affichées dans les vues des dossiers et exports.
+    %strong Inutile de les redemander à l’usager dans d’autres champs !
+  %ul.two-column-list.fr-mb-3w
+    - @columns.each do |column|
+      %li #{column.label}
+
+  - if @type_de_champ == "siret"
+    %p.fr-hint-text
+      Nous affichons aussi aux instructeurs un lien vers l’annuaire de l‘entreprise,
+      qui comporte encore davantage d’informations sur l’établissement comme les extraits KBIS.
+      = link_to("Voir un exemple", annuaire_link("35600000000048"), **external_link_attributes)

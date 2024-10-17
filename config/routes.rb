@@ -240,7 +240,7 @@ Rails.application.routes.draw do
   get "contact-admin", to: "contact#admin"
 
   get "mentions-legales", to: "static_pages#legal_notice"
-  get "declaration-accessibilite", to: "static_pages#accessibility_statement"
+  get "declaration-accessibilite", to: "static_new_from_existingpages#accessibility_statement"
 
   get "carte", to: "carte#show"
 
@@ -609,6 +609,7 @@ Rails.application.routes.draw do
         put :allow_expert_messaging
         put :experts_require_administrateur_invitation
         put :restore
+        get 'api_champ_columns'
       end
 
       get :api_particulier, controller: 'jeton_particulier'
