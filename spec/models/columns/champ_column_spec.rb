@@ -125,6 +125,7 @@ describe Columns::ChampColumn do
     type_de_champ = types_de_champ.find { _1.type_champ == type }
     champ = dossier.send(:filled_champ, type_de_champ, nil)
     columns = type_de_champ.columns(procedure:)
+    binding.irb if type =="siret"
     expect(columns.map { _1.value(champ) }).to assertion
   end
 

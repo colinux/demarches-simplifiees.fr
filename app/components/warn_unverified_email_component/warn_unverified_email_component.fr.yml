@@ -1,0 +1,4 @@
+---
+fr:
+  title_html: Votre email <strong>%{email}</strong> n’est pas confirmé.
+  description_html: Le lien de confirmation vous a été envoyé lors de votre inscription. Sa validation est nécessaire pour recevoir les notifications de votre dossier.

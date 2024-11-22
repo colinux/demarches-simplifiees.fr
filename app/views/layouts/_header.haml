@@ -70,7 +70,7 @@
             - elsif params[:controller] == 'recherche'
               = render partial: 'layouts/search_dossiers_form'
 
-    = render SwitchDomainBannerComponent.new(user: current_user)
+    = render WarnUnverifiedEmailComponent.new(user: current_user)
 
     #modal-header__menu.fr-header__menu.fr-modal{ "aria-labelledby": "navbar-burger-button" }
       .fr-container

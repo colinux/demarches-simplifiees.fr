@@ -1,0 +1,6 @@
+= render Dsfr::NoticeComponent.new(state: :warning) do |c|
+  - c.with_title do
+    = t(".title_html", email: user.email)
+
+  - c.with_description do
+    = t(".description_html")
