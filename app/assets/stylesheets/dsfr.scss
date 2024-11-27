@@ -252,3 +252,29 @@ input[type='radio'] {
 .fr-tag.no-wrap {
   white-space: nowrap;
 }
+
+.fr-table--sticky-header {
+  /* Sans scroll horizontal: */
+  /* .fr-table__container {
+    overflow: visible;
+  }
+
+  .fr-table__wrapper {
+    overflow: clip;
+  } */
+
+  /* Scroll horizontal mais défilement complet + pb bordure right */
+  .fr-table__container {
+    overflow: visible;
+  }
+
+  .fr-table__content {
+    overflow: visible;
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+  }
+}
