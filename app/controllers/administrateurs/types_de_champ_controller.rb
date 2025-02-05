@@ -3,6 +3,7 @@
 module Administrateurs
   class TypesDeChampController < AdministrateurController
     include ActiveSupport::NumberHelper
+    include ActionView::Helpers::TagHelper
     include CsvParsingConcern
 
     before_action :retrieve_procedure
@@ -170,8 +171,8 @@ module Administrateurs
       service = LLM::RevisionImproverService.new(@procedure)
       suggestion = service.suggest
 
-      @text = suggestion[:summary]
       @changes = suggestion[:operations]
+      @text = Array.wrap(suggestion[:summary]).map { _1.gsub('- ', '') }.join(tag.br)
     end
 
     def accept_simplification
