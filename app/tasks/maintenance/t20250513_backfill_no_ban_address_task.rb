@@ -11,11 +11,13 @@ module Maintenance
 
     def collection
       with_statement_timeout("15min") do
-        Champs::AddressChamp.all
+        Champs::AddressChamp.ids
       end
     end
 
-    def process(champ)
+    def process(champ_id)
+      champ = Champ.find(champ_id)
+
       if champ.legacy_not_ban?
         value_json = {
           not_in_ban: 'true',
@@ -24,6 +26,8 @@ module Maintenance
         }
         champ.update_column(:value_json, value_json)
       end
+    rescue ActiveRecord::RecordNotFound
+      # NOOP
     end
   end
 end

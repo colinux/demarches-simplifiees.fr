@@ -5,7 +5,7 @@ require "rails_helper"
 module Maintenance
   RSpec.describe T20250513BackfillNoBanAddressTask do
     describe "#process" do
-      subject(:process) { described_class.process(champ) }
+      subject(:process) { described_class.process(champ.id) }
       let(:procedure) { create(:procedure, types_de_champ_public: [{ type: :address }]) }
       let(:dossier) { create(:dossier, :with_populated_champs, procedure:) }
       let(:address_champ) { dossier.champs.first }
@@ -18,7 +18,8 @@ module Maintenance
         expect(address_champ.address_label).to eq("123 Main St")
         expect(address_champ.value_json).to be_blank
         expect(address_champ.legacy_not_ban?).to be_truthy
-        described_class.process(address_champ)
+        described_class.process(address_champ.id)
+        address_champ.reload
         expect(address_champ.full_address?).to be_falsey
         expect(address_champ.ban?).to be_falsey
         expect(address_champ.street_address).to eq("123 Main St")
