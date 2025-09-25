@@ -76,6 +76,9 @@ Les informations nécessaire à l'initialisation de la base doivent être pré-c
     > create user tps_test with password 'tps_test' superuser;
     > \q
 
+
+Idéalement, l'extension `postgis` doit être installée avec votre gestionnaire de paquets, pour pouvouer jouer un `db:setup` puis changez la variable `POSTGIS_EXTENSION_DISABLED`. Elle est optionnelle si vous jouez les migrations à la main, mais certains calculs de validation liés aux cartes seront désactivés.
+
 ### Initialisation de l'environnement de développement
 
 Sous Ubuntu, certains packages doivent être installés au préalable :
