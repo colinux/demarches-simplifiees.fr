@@ -89,6 +89,10 @@ Afin d'initialiser l'environnement de développement, exécutez la commande suiv
 
     bin/setup
 
+Puis jouez la maintenance task `Maintenance::UpdateZonesTask` pour injecter les zones auxquelles sont rattachables les démarches :
+
+    RAILS_QUEUE_ADAPTER=inline bundle exec maintenance_tasks perform Maintenance::UpdateZonesTask
+
 ### Lancement de l'application
 
 On lance le serveur d'application ainsi :
