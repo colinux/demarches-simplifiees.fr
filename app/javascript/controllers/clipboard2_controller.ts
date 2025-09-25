@@ -85,6 +85,9 @@ export class Clipboard2Controller extends Controller {
   }
 
   private insertSpan(wrapper: HTMLElement, span: HTMLElement): void {
+    // Remove span from DOM if it's already attached from a previous insertion
+    span.remove();
+
     const placeholder = wrapper.querySelector<HTMLElement>(
       '[data-copy-message-placeholder]'
     );
