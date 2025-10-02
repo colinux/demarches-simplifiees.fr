@@ -1,0 +1,16 @@
+<turbo-frame id="procedures-list">
+  <ul class="procedure-list fr-pl-0">
+  <%= render partial: 'instructeurs/procedures/list',formats: :html,
+      collection: @collection,
+      as: :p,
+      locals: { dossiers_count_per_procedure: @dossiers_count_per_procedure,
+        dossiers_a_suivre_count_per_procedure: @dossiers_a_suivre_count_per_procedure,
+        dossiers_termines_count_per_procedure: @dossiers_termines_count_per_procedure,
+        dossiers_expirant_count_per_procedure: @dossiers_expirant_count_per_procedure,
+        followed_dossiers_count_per_procedure: @followed_dossiers_count_per_procedure,
+        procedure_ids_with_notifications: @procedure_ids_with_notifications,
+        notifications_counts_per_procedure: @notifications_counts_per_procedure,
+      }
+  %>
+  </ul>
+</turbo-frame>
