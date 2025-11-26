@@ -22,7 +22,7 @@ RSpec.describe AttestationPdfGenerationJob, type: :job do
 
         expect(dossier.reload.attestation).to be_present
         expect(dossier.attestation.pdf.attached?).to be true
-        expect(dossier.attestation.pdf.filename.to_s).to eq("attestation-#{dossier.id}.pdf")
+        expect(dossier.attestation.pdf.filename.to_s).to eq("attestation-dossier-#{dossier.id}.pdf")
         expect(dossier.attestation.pdf.content_type).to eq('application/pdf')
       end
 
