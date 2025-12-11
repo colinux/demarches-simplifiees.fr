@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module LLM
-  class TypesConsolidator < BaseImprover
+  class TypesImprover < BaseImprover
     TOOL_DEFINITION = {
       type: 'function',
       function: {
-        name: LLMRuleSuggestion.rules.fetch('consolidate_types'),
+        name: LLMRuleSuggestion.rules.fetch('improve_types'),
         description: 'Propose un changement de type de champ pour une meilleure UX pour l\'usager et des données consolidées pour les instructeurs',
         parameters: {
           type: 'object',
@@ -15,17 +15,9 @@ module LLM
               description: 'Changement de type',
               properties: {
                 stable_id: { type: 'integer', description: 'Identifiant du champ à modifier.' },
-                type_champ: { type: 'string', description: 'Nouveau type de champ.' },
+                type_champ: { type: 'string', description: 'Nouveau type du champ.' },
               },
               required: %w[stable_id type_champ],
-            },
-            destroy: {
-              type: 'object',
-              description: 'Suppression d\'un champ devenu redondant après consolidation, ou demandant une information remontée via le champ Adresse, SIRET, …',
-              properties: {
-                stable_id: { type: 'integer', description: 'Identifiant du champ à supprimer.' },
-              },
-              required: %w[stable_id],
             },
             justification: { type: 'string' },
           },
@@ -36,15 +28,13 @@ module LLM
 
     def system_prompt
       <<~TXT
-        Tu es un assistant chargé d'améliorer les types de champs d'un formulaire administratif français.
+        Tu es un assistant chargé d'améliorer les types de champs d'un formulaire administratif français afin d'améliorer son ergonomie.
 
         Contexte de la démarche :
         - Titre : %{libelle}
         - Description : %{description}
 
-        Principe "Dites-le nous une fois" (DLNUF) : l'administration ne doit pas redemander des informations déjà collectées.
-
-        Champs collectés à l'entrée de la démarche :
+        Informations collectées avant le début du formulaire:
         %{champs_entree}
       TXT
     end
@@ -74,17 +64,17 @@ module LLM
 
         Paiement et identification d'entités :
         - iban : Numéro IBAN avec validation du format bancaire international
-        - siret : Numéro SIRET. Fournit automatiquement via API Entreprise : raison sociale, SIREN, nom commercial, forme juridique, code NAF, libellé d'activité, N° TVA intracommunautaire, capital social, effectif, date de création, adresse du siège, état administratif.
+        - siret : Numéro SIRET. Fournit automatiquement : raison sociale, SIREN, nom commercial, forme juridique, code NAF, libellé d'activité, N° TVA intracommunautaire, capital social, effectif, date de création, adresse du siège, état administratif.
 
         Référentiels externes :
         - rna : Répertoire National des Associations. Fournit : titre et objet de l'association, adresse normalisée, état d'aministratif
         - rnf : Répertoire National des Fondations. Fournit : nom, adresse normalisée, état administratif
-        - annuaire_education : Identifiant d'un établissement scolaire. Fournit : nom, adresse, commune, SIREN, académie, nature de l’établissement, type de contrat, nombre d'élèves, téléphone, email
+        - annuaire_education : Identifiant d'un établissement scolaire. Fournit : nom, adresse, commune, SIREN, académie, nature de l'établissement, type de contrat, nombre d'élèves, téléphone, email
 
         Nombres et dates :
         - decimal_number : Nombre décimal avec validation (min/max configurables)
         - integer_number : Nombre entier avec validation (min/max configurables)
-        - formatted : Texte court avec contraintes de format, par exemple que des lettres ou chiffres. Options : letters_accepted, numbers_accepted, special_characters_accepted
+        - formatted : Texte court avec contraintes de format, par exemple que des lettres ou chiffres. A n'utiliser que pour des codes, numéros, identifiants dont le format est bien connu. Options : letters_accepted, numbers_accepted, special_characters_accepted
         - date : Date seule avec sélecteur calendrier
         - datetime : Date et heure avec sélecteur
 
@@ -100,19 +90,13 @@ module LLM
       <<~TXT
         ## Règles :
         - Utilise `update` pour modifier le type du champ (avec stable_id et type_champ)
-        - Utilise `destroy` pour supprimer un champ afin de respecter le DLNUF
         - Ignore les champs qui sont à garder tels quels
+        - Ne suggère pas de transformation inutile, par exemple de change pas un champ "Commune" en "Adresse" si seule la commune est demandée.
 
         ## Justification:
-        - Quand un champ doit être modifié, fournis une courte justification courte qui sera affichée à l'administrateur pour lui expliquer les raisons pratiques du changement ou de la suppression.
+        - Quand un champ doit être modifié, fournis une courte justification qui sera affichée à l'administrateur pour lui expliquer les raisons pratiques du changement.
         - le texte ne doit pas comporter les libellés trop longs de champs
         - le texte ne doit pas comporter de détails techniques (HTML, code du type de champ, ids etc…).
-
-        ## Consolidation de champs :
-        Les types address et siret fournissent automatiquement de nombreuses informations s'ils ont été demandés auparavant.
-        Tu peux proposer de consolider des champs séparés en un seul champ enrichi.
-        Règle critique : Les champs à consolider doivent concerner le MÊME sujet/contexte.
-        Exemple : "Adresse de résidence" + "Commune de résidence" → on garde le champ adresse mais on supprime le champ commune
 
         ## Concentre-toi sur les gains concrets :
         - Validation automatique (email, iban, siret)
@@ -120,15 +104,12 @@ module LLM
         - Simplification pour l'usager (UX adaptée pour chaque champ, meilleure accessibilité)
 
         Utilise l'outil #{TOOL_DEFINITION.dig(:function, :name)} pour chaque proposition (un appel par changement).
+        Ne réponds rien si tous les types sont déjà corrects.
       TXT
     end
 
     def build_item(args, tdc_index: {})
-      if args['destroy']
-        build_destroy_item(args)
-      elsif args['update']
-        build_update_item(args, tdc_index)
-      end
+      build_update_item(args, tdc_index) if args['update']
     end
 
     private
@@ -153,23 +134,6 @@ module LLM
         verify_status: 'pending',
         justification: args['justification'].presence,
       }
-    end
-
-    def build_destroy_item(args)
-      data = args['destroy']
-      stable_id = data.is_a?(Hash) ? data['stable_id'] : data
-
-      return if stable_id.nil?
-
-      result = {
-        op_kind: 'destroy',
-        stable_id:,
-        payload: { 'stable_id' => stable_id },
-        verify_status: 'pending',
-        justification: args['justification'].presence,
-      }
-
-      result
     end
 
     def valid_type_champ?(type_champ)

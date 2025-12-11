@@ -21,7 +21,7 @@ module RevisionDescribableToLLMConcern
     champs_entree = if procedure.for_individual
       "- Civilité, nom et prénom du DEMANDEUR"
     else
-      "- SIRET de l'ETABLISSEMENT (fournit automatiquement ~20 informations : raison sociale, adresse, forme juridique, NAF, etc.)"
+      "- SIRET de l'établissement, avec raison sociale, SIREN, nom commercial, forme juridique, code NAF, libellé d'activité, N° TVA intracommunautaire, capital social, effectif, date de création, adresse du siège, état administratif."
     end
 
     {
